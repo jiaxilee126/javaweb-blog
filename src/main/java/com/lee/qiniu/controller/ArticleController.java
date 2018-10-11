@@ -27,9 +27,12 @@ public class ArticleController {
 		return articleService.save(article);
 	}
 	
-	@RequestMapping("/test")
-	@ResponseBody
-	public String test(String test){
-		return "test";
+	@RequestMapping("/edit")
+	public JsonResult edit(Article article){
+		return null;
+	}
+	
+	public JsonResult delete(Integer id){
+		return null;
 	}
 }
