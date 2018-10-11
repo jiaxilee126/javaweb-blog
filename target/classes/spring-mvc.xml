@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util" 
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-4.3.xsd
+    http://www.springframework.org/schema/mvc     
+    http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+	
+	
+	<context:component-scan base-package="com.lee.qiniu.*"></context:component-scan>
+	
+	<context:annotation-config />  
+    <mvc:annotation-driven />
+    <import resource="classpath*:/beans-aspect.xml"/>
+    <util:properties id="jdbc" location="classpath*:/db.properties"/>
+    
+	<!--配置数据源	配置dbcp数据库连接池-->
+	<bean id="ds" class="org.apache.commons.dbcp.BasicDataSource">
+	   <property name="url" value="#{jdbc.url}"></property>
+	   <property name="driverClassName" value="#{jdbc.driver}"></property>
+	   <property name="username" value="#{jdbc.user}"></property>
+	   <property name="password" value="#{jdbc.password}"></property>
+	   <property name="maxActive" value="#{jdbc.maxActive}"></property>
+	   <property name="maxWait" value="#{jdbc.maxWait}"></property>
+	</bean>
+    <!--配置mybatis的session工厂-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+         <property name="dataSource" ref="ds" />
+        <property name="mapperLocations"
+            value="classpath:com/lee/qiniu/mapper/*.xml" />
+    </bean>
+    
+	<!-- 扫描指定包下所有的接口  来相互匹配sql数据-->    
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.lee.qiniu.dao" />
+        <!-- 自动注入sqlSessionFactory -->
+    </bean>
+    
+    
+    
+	<!-- 配置视图解析器 如何把handler 方法返回值解析为实际的物理视图 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+
+	<!-- 多部分文件上传 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	     <property name="maxUploadSize" value="104857600" />
+	     <property name="maxInMemorySize" value="4096" />
+	     <property name="defaultEncoding" value="UTF-8"></property>
+	</bean>
+
+	<!-- 存储区域设置信息 -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<!-- 默认语言 -->
+		<property name="defaultLocale" value="zh_CN" />
+	</bean>
+	<!-- 国际化资源文件 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+            <list>
+                <value>classpath:i18n/message</value>
+                <value>classpath:i18n/common</value>
+                <value>classpath:i18n/login</value>
+            </list>
+        </property>
+        <property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+
+
+
+	
+	
+</beans>

@@ -1,0 +1,21 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.qiniu.dao.ArticleDao">
+
+	<!-- Protected code begin -->
+	<resultMap type='com.lee.qiniu.entity.Article' id='Article'>
+		<id column='Id' property='id' />
+		<result column='Title' property='title' />
+		<result column='Image' property='image' />
+		<result column='Content' property='content' />
+		<result column='CreateTime' property='createTime' />
+	</resultMap>
+	
+	<insert id="insert">
+		Insert Into Article(`Title`,`Image`,`Content`,`CreateTime`) 
+			Values(#{title},#{image},#{content},#{createTime})
+	</insert>
+	
+</mapper>
+
