@@ -8,7 +8,15 @@ public class Article {
 	private String title;
 	private String image;
 	private String content;
+	private Integer createId;
 	private Date createTime;
+	
+	public Integer getCreateId() {
+		return createId;
+	}
+	public void setCreateId(Integer createId) {
+		this.createId = createId;
+	}
 	public Integer getId() {
 		return id;
 	}
