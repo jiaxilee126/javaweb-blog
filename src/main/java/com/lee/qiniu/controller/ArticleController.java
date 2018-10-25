@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lee.qiniu.aspect.annotation.EMethodType;
+import com.lee.qiniu.aspect.annotation.SysLog;
 import com.lee.qiniu.entity.Article;
 import com.lee.qiniu.json.JsonResult;
 import com.lee.qiniu.serviceImpl.ArticleService;
@@ -23,6 +25,7 @@ public class ArticleController {
 	
 	@RequestMapping("/save")
 	@ResponseBody
+	@SysLog(module="文章管理",type = EMethodType.INSERT)
 	public JsonResult save(Article article){
 		return articleService.save(article);
 	}
