@@ -1,6 +1,8 @@
 package com.lee.qiniu.aspect;
 
 import java.lang.reflect.Method;
+import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,13 +12,16 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lee.qiniu.aspect.annotation.SysLog;
-import com.lee.qiniu.entity.OprerationLog;
+import com.lee.qiniu.dao.OperationLogDao;
+import com.lee.qiniu.entity.OperationLog;
 
 /**
  * @Description: 日志切面
@@ -27,6 +32,8 @@ import com.lee.qiniu.entity.OprerationLog;
 @Component
 @EnableAsync
 public class LogAspect {
+	@Autowired
+	private OperationLogDao operationLogDao;
 	
 	@Pointcut("@annotation(com.lee.qiniu.aspect.annotation.SysLog) ")
 	public void pointcut(){};
@@ -40,7 +47,7 @@ public class LogAspect {
 	 */
 	@AfterReturning(pointcut="pointcut()", returning = "rv")
 	public void doAfter(JoinPoint joinPoint, Object rv){
-		handleLog(joinPoint, rv, null);
+		handleLog(getOperationInfo(),joinPoint, rv, null);
 	}
 	
 	/**
@@ -53,8 +60,7 @@ public class LogAspect {
 	 */
 	@AfterThrowing(pointcut = "pointcut()", throwing = "e")
 	public void doAfterThrow(JoinPoint joinPoint, Throwable e) throws ClassNotFoundException{
-		
-		
+		handleLog(getOperationInfo(),joinPoint, null, e);
 	}
 	
 	public SysLog getLog(JoinPoint joinPoint) throws Exception{
@@ -78,21 +84,38 @@ public class LogAspect {
 	}
 	
 	
-	public void handleLog(JoinPoint joinPoint, Object rv, Throwable e){
+	public void handleLog(OperationLog log,JoinPoint joinPoint, Object rv, Throwable e){
 		try {
-			
+			if(e != null){
+				log.setSussess(false);
+				log.setErrorMsg(e.getMessage());
+			}else {
+				log.setSussess(true);
+			}
+			SysLog sysLog = getLog(joinPoint);
+			log.setActionName(sysLog.module());
+			log.setMethodName(sysLog.type().getName());
+			operationLogDao.insert(log);
 		} catch (Exception e2) {
-			// TODO: handle exception
+			e2.printStackTrace();
 		}
 	}
 	
-	OprerationLog getOperationInfo(){
-		OprerationLog oprerationLog = new OprerationLog();
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		request.getRequestURI();
-		
-	
-	
+	private OperationLog getOperationInfo(){
+		OperationLog oprerationLog = new OperationLog();
+		try {
+			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+			oprerationLog.setLogDateTime(new Date());
+			oprerationLog.setOperUrl(request.getRequestURI());
+			oprerationLog.setOperIp(request.getRemoteAddr());
+			ObjectMapper objectMapper = new ObjectMapper();
+			
+			Map<String, String[]> params = request.getParameterMap();
+			oprerationLog.setParams(objectMapper.writeValueAsString(params));
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	
 		return oprerationLog;
 	}

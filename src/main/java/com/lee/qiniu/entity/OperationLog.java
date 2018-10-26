@@ -2,7 +2,7 @@ package com.lee.qiniu.entity;
 
 import java.util.Date;
 
-public class OprerationLog {
+public class OperationLog {
 	private Integer id;
 	private Date logDateTime;
 	private String moduleName;
