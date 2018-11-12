@@ -1,0 +1,20 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.qiniu.dao.OperationLogDao">
+
+	<!-- Protected code begin -->
+	<resultMap type='com.lee.qiniu.entity.OperationLog' id='Article'>
+		<id column='Id' property='id' />
+		<result column='Title' property='title' />
+		<result column='logDateTime' property='logDateTime' />
+		<result column='moduleName' property='moduleName' />
+		<result column='actionName' property='actionName' />
+	</resultMap>
+	<insert id="insert">
+		Insert Into Article(`Title`,`Image`,`Content`,`CreateTime`) 
+			Values(#{title},#{image},#{content},#{createTime})
+	</insert>
+	
+</mapper>
+

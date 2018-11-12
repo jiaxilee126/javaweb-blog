@@ -8,13 +8,14 @@
 		<id column='Id' property='id' />
 		<result column='Title' property='title' />
 		<result column='Image' property='image' />
+		<result column='CreateId' property='createId' />
 		<result column='Content' property='content' />
 		<result column='CreateTime' property='createTime' />
 	</resultMap>
 	
 	<insert id="insert">
-		Insert Into Article(`Title`,`Image`,`Content`,`CreateTime`) 
-			Values(#{title},#{image},#{content},#{createTime})
+		Insert Into Article(`Title`,`Image`, `CreateId`,`Content`,`CreateTime`) 
+			Values(#{title},#{image},#{createId},#{content},#{createTime})
 	</insert>
 	
 </mapper>

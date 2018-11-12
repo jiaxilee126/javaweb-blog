@@ -10,6 +10,8 @@ public enum ResultCodeEnum {
 	OBJECT_UN_EXIST(10004,"对象不存在"),
 	NOT_HAVE_PERMISSION(10005,"没有权限"),
 	INTERNAL_INTERFACE_ERROR(10006,"内部接口请求错误"),
+	DATABASE_EXCEPTION(10007,"数据库执行异常"),
+	
 	
 	LOGIN_FIRST(20001,"请登录后再访问"),
 	USERNAME_PASSWORD_MISMATCH(20002,"用户名或密码错误"),

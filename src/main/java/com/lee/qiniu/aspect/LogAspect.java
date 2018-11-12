@@ -34,7 +34,13 @@ import com.lee.qiniu.entity.OperationLog;
 public class LogAspect {
 	@Autowired
 	private OperationLogDao operationLogDao;
-	
+	/**
+	 * @Description: 定义切入点
+	 *  void  
+	 * @throws
+	 * @author Jussi Lee
+	 * @date 2018年10月30日
+	 */
 	@Pointcut("@annotation(com.lee.qiniu.aspect.annotation.SysLog) ")
 	public void pointcut(){};
 	

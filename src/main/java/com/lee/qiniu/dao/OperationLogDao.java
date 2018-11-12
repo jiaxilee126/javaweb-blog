@@ -7,4 +7,5 @@ import com.lee.qiniu.entity.OperationLog;
 @Repository
 public interface OperationLogDao {
 	void insert(OperationLog operationLog);
+	OperationLog getById(Integer id);
 }

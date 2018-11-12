@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lee.qiniu.exception.RollBackException;
 import com.lee.qiniu.json.JsonResult;
 import com.lee.qiniu.json.ResultCodeEnum;
 
@@ -30,5 +31,12 @@ public class GlobalExceptionHandler {
 	public  JsonResult handlerException(TypeMismatchException e){
 		logger.error("参数类型不匹配异常"+e.getMessage());
 		return JsonResult.code(ResultCodeEnum.DATAPLAT_REQ_ERROT);
+	}
+	
+	@ResponseBody
+	@ExceptionHandler({RollBackException.class})
+	public JsonResult handlerException(RollBackException e) {
+		logger.error("数据库执行异常"+e.getMessage());
+		return JsonResult.code(ResultCodeEnum.DATABASE_EXCEPTION);
 	}
 }
