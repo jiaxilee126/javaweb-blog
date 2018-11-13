@@ -1,4 +1,4 @@
-package com.lee.qiniu.serviceImpl;
+package com.lee.qiniu.service.impl;
 
 import java.io.IOException;
 

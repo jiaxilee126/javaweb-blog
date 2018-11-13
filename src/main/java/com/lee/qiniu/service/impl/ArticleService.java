@@ -24,7 +24,7 @@ public class ArticleService implements IArticleService {
 		try {
 			article.setCreateTime(new Date());
 			articleDao.insert(article);
-			System.out.println(1/0);
+			//System.out.println(1/0);
 		} catch (Exception e) {
 			throw new RollBackException(e.getMessage());
 		}

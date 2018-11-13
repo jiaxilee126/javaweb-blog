@@ -9,7 +9,7 @@ import com.lee.qiniu.aspect.annotation.EMethodType;
 import com.lee.qiniu.aspect.annotation.SysLog;
 import com.lee.qiniu.entity.Article;
 import com.lee.qiniu.json.JsonResult;
-import com.lee.qiniu.serviceImpl.ArticleService;
+import com.lee.qiniu.service.impl.ArticleService;
 
 @RequestMapping("/article")
 @Controller
