@@ -35,4 +35,12 @@ public class CommonUtil {
 		
 		return null;
 	}
+	
+	
+	/**
+	 * 获取随机字符串
+	 */
+	public static String getRandomStr(Integer length){
+		return "";
+	}
 }

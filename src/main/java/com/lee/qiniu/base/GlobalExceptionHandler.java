@@ -1,6 +1,7 @@
 package com.lee.qiniu.base;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,5 +39,18 @@ public class GlobalExceptionHandler {
 	public JsonResult handlerException(RollBackException e) {
 		logger.error("数据库执行异常"+e.getMessage());
 		return JsonResult.code(ResultCodeEnum.DATABASE_EXCEPTION);
+	}
+	
+	
+	/**
+	 * @Description: 对于未授权的页面进行限制
+	 * @return String  
+	 * @throws
+	 * @author Jussi Lee
+	 * @date 2018年11月27日
+	 */
+	@ExceptionHandler({UnauthorizedException.class})
+	public String unAuthorized() {
+		return "/other/deny";
 	}
 }

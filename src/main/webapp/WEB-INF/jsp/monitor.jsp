@@ -59,7 +59,7 @@
 					<div class="panel-body">
 						<div class="container item">
 							<div style="width:160px;height:60px;line-height:40px;margin-top:14%;text-align:center;"><h2>30.58 Kt</h2></div>
-							<div style="position:absolute;background:red; top:30%; right:10px;height:44px; width:44px;background:url(<%=path %>/js/aa.png) 0 0 no-repeat; background-position:-44px -44px;"></div>
+							<div style="position:absolute;background:red; top:30%; right:10px;height:44px; width:44px;background:url(<%=path %>/js/pic.png) 0 0 no-repeat; background-position:-44px -44px;"></div>
 						</div>
 					</div>
 				</div>

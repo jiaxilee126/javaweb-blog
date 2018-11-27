@@ -43,17 +43,6 @@ Create Table `ArticleModel`(
 	Primary Key(`Id`)
 )Comment = '文章类型表';
 
-Drop Table If Exists `Admin`;
-Create Table `Admin`(
-	`Id` Int(10) Unsigned Not Null Auto_Increment Comment '主键',
-	`UserName` Varchar(20) Not NUll Comment '用户名',
-	`Password` Varchar(20) Not Null Comment '密码',
-	`Icon` Varchar(20) Null Comment '图标',
-	`Email` Varchar(50) Null Comment '邮箱',
-	`CreateTime` DateTime Not Null Comment '创建时间',
-	Primary Key(`Id`)
-)Comment = '后台用户表';
-
 Drop Table If Exists `OperationLog`;
 Create Table `OperationLog`(
 	`Id` Int Unsigned Not Null Auto_Increment Comment '主键',
@@ -71,3 +60,63 @@ Create Table `OperationLog`(
 	Constraint `fk_OperationLog_OUId` Foreign Key(`OperUserId`) References `Admin`(`Id`)
 )Comment = '日志记录表';
 
+-- 用户表 --
+Drop Table If Exists `Admin`;
+Create Table `Admin`(
+	`Id` Int(11) Unsigned Not Null Auto_Increment Comment '主键',
+	`UserName` Varchar(20) Not NUll Comment '用户名',
+	`Password` Varchar(20) Not Null Comment '密码',
+	`Icon` Varchar(20) Null Comment '图标',
+	`Email` Varchar(50) Null Comment '邮箱',
+	`CreateTime` DateTime Not Null Comment '创建时间',
+	Primary Key(`Id`)
+)Comment = '后台用户表';
+
+-- 角色表
+Drop Table If Exists `Role`;
+Create Table `Role`(
+	`Id` Int(11) Unsigned Not Null Auto_Increment Comment '主键',
+	`RoleCode` Varchar(200) Not Null Comment '角色编码',
+	`RoleName` Varchar(200) Not Null Comment '角色名称',
+	`Remarks` Varchar(1000) Null Comment '备注',
+	Primary Key(`Id`),
+	Unique Key(`RoleCode`),
+	Unique Key(`RoleName`)
+)Comment = '角色表';
+
+-- 菜单表
+Drop Table If Exists `Menu`;
+Create Table `Menu`(
+	`Id` Int(11) Unsigned Not Null Auto_Increment Comment '主键',
+	`MenuName` Varchar(200) Not Null Comment '菜单名称',
+	`SortedNumber` Int(11) Not Null Comment '菜单排序',
+	`ParentId` Int(11) Null Comment '父菜单id',
+	`MenuType` Int(11) Null Comment '菜单类型',
+	`MenuUrl` Varchar(200) Not Null Comment '菜单url',
+	`MenuIcon` Varchar(100) Not Null Comment '菜单图标',
+	`Perms` Varchar(100) Default '' Comment '权限字符',
+	`Remarks` Varchar(200) Default Null Comment '备注',
+	Primary Key(`Id`)
+)Comment = '菜单表';
+
+-- 角色菜单表
+Drop Table If Exists `RoleMenu`;
+Create Table `RoleMenu`(
+	`Id` Int(11) Unsigned Not Null Auto_Increment Comment '主键',
+	`RoleId` Int(11) Unsigned Not Null Comment '角色id',
+	`MenuId` Int(11) Unsigned Not Null Comment '菜单id',
+	Primary Key(`Id`),
+	Constraint `fk_RoleMenu_RId` Foreign Key(`RoleId`) References `Role`(`Id`),
+	Constraint `fk_RoleMenu_MId` Foreign Key(`MenuId`) References `Menu`(`Id`)
+)Comment = '用户角色表';
+
+-- 用户角色表
+Drop Table If Exists `AdminRole`;
+Create Table `AdminRole`(
+	`Id` Int(11) Unsigned Not Null Auto_Increment Comment '主键',
+	`AdminId` Int(11) Unsigned Not Null Comment '用户id',
+	`RoleId` Int(11) Unsigned Not Null Comment '角色id',
+	Primary Key(`Id`),
+	Constraint `fk_AdminRole_AId` Foreign Key(`AdminId`) References `Admin`(`Id`),
+	Constraint `fk_AdminRole_RId` Foreign Key(`RoleId`) References `Role`(`Id`)
+)Comment = '用户角色表';
