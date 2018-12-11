@@ -11,10 +11,20 @@
 <link href="<%=path%>/css/bootstrap.min.css" rel="stylesheet">
 <script src="<%=path%>/js/wangEditor.min.js"></script>
 <script src="<%=path %>/js/jquery-2.1.4.min.js"></script>
+<script src="<%=path %>/js/jquery.fullscreen.js"></script>
+<style>
+	#wrapper{
+		    width: 100%;
+		    height:100%;
+    overflow-x: hidden;
+    background-color: white;
+	}
+</style>
 </head>
 <body>
-
+	<div  id="wrapper">
 	<div class="container">
+		<a id="fullScreen">全屏</a>
 		<h2>文章发布</h2>
 		<form id="publishForm" class="form-horizontal form-label-left">
 			<div class="item form-group">
@@ -42,6 +52,7 @@
 			</div>
 		</form>
 
+	</div>
 	</div>
 </body>
 <script>
@@ -116,6 +127,9 @@
         	
         }) 
         
-   
+    // 全屏显示
+    $('#fullScreen').on('click', function () {
+    	$('#wrapper').fullScreen();
+    });
 </script>
 </html>
